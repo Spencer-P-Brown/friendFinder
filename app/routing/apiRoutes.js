@@ -19,26 +19,27 @@ module.exports = function (app){
 
         var userData = req.body;
         var userScores = userData.scores;
-        var totalDifference = 0;
+        var userTotal = userScores.reduce((sum, next) => sum + parseInt(next), 0);
 
         //Loop through friends object
         for (var i = 0; i < friendData.length; i++) {
 
-            totalDifference = 0;
+            var totalDifference = 0;
 
+            var currentFriendTotal = friendData[i].scores.reduce((sum, next) => sum + parseInt(next), 0);
+            totalDifference = Math.abs(userTotal - currentFriendTotal);
             //Loop through the scores of each friend
-            for (var j = 0; j < friendData[i].scores[j]; j++) {
-                //calculating the difference between each score and sum them into totalDifference
-                totalDifference += Math.abs(parseInt(userScores[j]) - parseInt(friendData[i].scores[j]));
-
-                //Find best friend match
-                if (totalDifference <= bestFriend.friendDifference) {
-
+            // for (var j = 0; j < friendData[i].scores[j]; j++) {
+            //     //calculating the difference between each score and sum them into totalDifference
+            //     // totalDifference += Math.abs(parseInt(userScores[j]) - parseInt(friendData[i].scores[j]));
+            //     var currentFriendTotal = userScores.reduce((sum, next) => sum + next, 0);
+            //     //Find best friend match
+            // }
+            console.log(totalDifference, friendData[i].name)
+            if (totalDifference <= bestFriend.friendDifference) {
                     bestFriend.name = friendData[i].friendName;
                     bestFriend.photo = friendData[i].photo;
                     bestFriend.friendDifference = totalDifference;
-
-                }
             }
         }
 
